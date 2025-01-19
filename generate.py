@@ -240,7 +240,7 @@ class CrosswordCreator():
         candidates = []
         min_remaining_values = float("inf")
         for i in self.domains.keys():
-            if i not in assignment:
+            if i not in assignment.keys():
                 values = self.domains[i]
                 if len(values) < min_remaining_values:
                     candidates.clear()
@@ -282,7 +282,7 @@ class CrosswordCreator():
         value_candidates = self.order_domain_values(possible_assignment, assignment)
         if not value_candidates:
             print("something is off.")
-            return assignment
+            return None
         for value in value_candidates:
             if value in assignment.values():
                 continue
@@ -291,7 +291,6 @@ class CrosswordCreator():
             if is_done is None:
                 assignment.pop(possible_assignment)
                 continue
-            self.consistent(is_done)
             return is_done
         return None
 
