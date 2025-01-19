@@ -147,7 +147,7 @@ class CrosswordCreator():
         Return True if arc consistency is enforced and no domains are empty;
         return False if one or more domains end up empty.
         """
-        if not arcs:
+        if arcs is None:
             arcs = [(var, neighbor) for var in self.domains.keys() for neighbor in self.crossword.neighbors(var) if neighbor != var]
         while len(arcs) != 0:
             x, y = arcs.pop(0)
@@ -180,6 +180,8 @@ class CrosswordCreator():
         """
         constraints = self.crossword.overlaps
         for var in assignment.keys():
+            if var.length != len(assignment[var]):
+                return False
             if assignment[var] in self.domains[var]:
                 neighbors = [neighbor for neighbor in self.crossword.neighbors(var) if neighbor in assignment.keys()]
                 for neighbor in neighbors:
@@ -254,6 +256,7 @@ class CrosswordCreator():
             neighbors = self.crossword.neighbors(i)
             if len(neighbors) > highest_degree:
                 highest_degree_vertex = i
+                highest_degree = len(neighbors)
         return highest_degree_vertex
 
 
